@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "node": ">=16.10.0",
+  "node": "16.10.0",
+  "engines": {
+    "node" : "16.10.0",
+    "npm" : "7.24.0"
+  },
   "scripts" : {
     "fetch-lore" : "node --experimental-json-modules --loader ts-node/esm ./index.ts",
     "update-discord" : "node --experimental-json-modules --loader ts-node/esm ./discord.ts"
