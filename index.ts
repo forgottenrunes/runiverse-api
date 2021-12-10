@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
 const IPFS_SERVER = "https://nfts.forgottenrunes.com/ipfs";
 
 async function fetchLoreMetadata(loreMetadataURI: string | null): Promise<any> {
-  if (!loreMetadataURI) return null;
+  if (!loreMetadataURI) return {};
 
   const ipfsURL = `${IPFS_SERVER}/${
     loreMetadataURI.match(/^ipfs:\/\/(.*)$/)?.[1]
@@ -28,7 +28,7 @@ async function fetchLoreMetadata(loreMetadataURI: string | null): Promise<any> {
   // console.log("ipfsURL: ", ipfsURL);
 
   if (!ipfsURL || ipfsURL === "undefined") {
-    return null;
+    return {};
   }
 
   //TODO: retries?

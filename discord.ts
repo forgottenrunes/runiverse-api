@@ -91,17 +91,23 @@ FROM "Lore" as l join "LoreToken" as lt on l."loreTokenId" = LT.id where l."disc
       .setURL(url)
       .setAuthor(`Wizard #${lore.tokenId}`)
       .setImage(image)
-      .setDescription(lore.content.previewSentence);
+      .setDescription(
+        lore?.content?.previewSentence ?? `The Lore of Wizard #${lore.tokenId}`
+      );
 
     await prisma.lore.update({
       where: { id: lore.id },
       data: { discordNotified: true },
     });
 
-    await channel
-      .send({ embeds: [exampleEmbed] })
-      .then((message) => console.log(`Sent message: ${lore.id}`))
-      .catch(console.error);
+    if (lore?.content?.previewSentence && lore?.content?.description) {
+      await channel
+        .send({ embeds: [exampleEmbed] })
+        .then((message) => console.log(`Sent message: ${lore.id}`))
+        .catch(console.error);
+    } else {
+      console.log(`Ignoring empty lore with id ${lore.id}`);
+    }
   }
   console.log("Done");
   await client.destroy();
