@@ -59,7 +59,7 @@ client.once("ready", async () => {
   const prisma = new PrismaClient();
   const lores: any[] = await prisma.$queryRaw(
     Prisma.sql`SELECT l.id, lt."tokenContract", lt."tokenId", row_number() OVER (PARTITION BY LT."tokenContract", LT."tokenId" ORDER BY "createdAtBlock" asc) as page, l.content
-FROM "Lore" as l join "LoreToken" as lt on l."loreTokenId" = LT.id where l."discordNotified" = false order by l."createdAtBlock" desc limit 10;`
+FROM "Lore" as l join "LoreToken" as lt on l."loreTokenId" = LT.id where l."discordNotified" = false and l."nsfw" = false order by l."createdAtBlock" desc limit 10;`
   );
 
   const channel = (await client.channels.fetch(
