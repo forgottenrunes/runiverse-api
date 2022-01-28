@@ -21,7 +21,6 @@
     "ethers": "5.5.3",
     "lodash": "^4.17.21",
     "marked": "^4.0.12",
-    "moralis": "^1.1.2",
     "node-fetch": "3.2.0",
     "remark-parse": "10.0.1",
     "remark-squeeze-paragraphs": "5.0.1",
