@@ -9,7 +9,7 @@ import { find } from "lodash";
 
 const prisma = new PrismaClient();
 
-const WIZARD_CONTRACT = process.env.WIZARDS_CONTRACT as string;
+const WIZARDS_CONTRACT = process.env.WIZARDS_CONTRACT as string;
 
 export async function updateMetadata() {
   const json = JSON.parse(
@@ -39,12 +39,12 @@ export async function updateMetadata() {
       token: {
         connectOrCreate: {
           create: {
-            tokenContract: WIZARD_CONTRACT.toLowerCase(),
+            tokenContract: WIZARDS_CONTRACT.toLowerCase(),
             tokenId: parseInt(id),
           },
           where: {
             tokenContract_tokenId: {
-              tokenContract: WIZARD_CONTRACT.toLowerCase(),
+              tokenContract: WIZARDS_CONTRACT.toLowerCase(),
               tokenId: parseInt(id),
             },
           },
@@ -55,7 +55,7 @@ export async function updateMetadata() {
     const token = await prisma.token.findUnique({
       where: {
         tokenContract_tokenId: {
-          tokenContract: WIZARD_CONTRACT.toLowerCase(),
+          tokenContract: WIZARDS_CONTRACT.toLowerCase(),
           tokenId: parseInt(id),
         },
       },
