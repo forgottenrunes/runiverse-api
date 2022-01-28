@@ -9,6 +9,7 @@
   "scripts": {
     "build" : "tsc",
     "fetch-lore": "node --enable-source-maps dist/lore/cron.js",
+    "update-wizards-metadata": "node --enable-source-maps dist/metadata/wizards-cron.js",
     "update-discord": "node --enable-source-maps dist/notifications/discord.js"
   },
   "dependencies": {
