@@ -17,10 +17,9 @@ export async function fetchAndDehydrateLore(loreMetadataURI: string): Promise<{
   const ipfsURL = `${IPFS_SERVER}/${
     loreMetadataURI.match(/^ipfs:\/\/(.*)$/)?.[1]
   }`;
-  console.log(loreMetadataURI);
-  console.log("ipfsURL: ", ipfsURL);
 
   if (!ipfsURL || ipfsURL.endsWith("undefined")) {
+    console.log(`Skipping url ${ipfsURL} for ${loreMetadataURI}`);
     return { images: [] };
   }
 
