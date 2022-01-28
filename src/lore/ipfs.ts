@@ -5,7 +5,8 @@ import axiosRetry from "axios-retry";
 
 axiosRetry(axios, { retries: 3 });
 
-const IPFS_SERVER = "https://nfts.forgottenrunes.com/ipfs";
+const IPFS_SERVER =
+  process.env.IPFS_SERVER ?? "https://nfts.forgottenrunes.com/ipfs";
 
 export async function fetchAndDehydrateLore(loreMetadataURI: string): Promise<{
   rawContent?: any;
@@ -16,16 +17,24 @@ export async function fetchAndDehydrateLore(loreMetadataURI: string): Promise<{
   const ipfsURL = `${IPFS_SERVER}/${
     loreMetadataURI.match(/^ipfs:\/\/(.*)$/)?.[1]
   }`;
-  // console.log("ipfsURL: ", ipfsURL);
+  console.log(loreMetadataURI);
+  console.log("ipfsURL: ", ipfsURL);
 
-  if (!ipfsURL || ipfsURL === "undefined") {
+  if (!ipfsURL || ipfsURL.endsWith("undefined")) {
     return { images: [] };
   }
 
-  //TODO: retries?
   console.log(`Fetching lore metadata for ${ipfsURL}`);
+  let res;
+  try {
+    res = await axios.get(ipfsURL);
+  } catch (e: any) {
+    console.error(
+      "Fetch from network error (after retries)... will skip this entry...."
+    );
+    return { images: [] };
+  }
 
-  const res = await axios.get(ipfsURL);
   if (res.status >= 200 && res.status < 300) {
     const json: any = res.data;
     // console.log(json);
