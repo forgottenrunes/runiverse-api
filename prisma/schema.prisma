@@ -10,7 +10,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model LoreUpdate {
+model LoreBlockUpdate {
   id              String @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
   upToBlockNumber Int    @unique
   timeTaken       Int

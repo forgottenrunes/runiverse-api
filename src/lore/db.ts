@@ -82,7 +82,7 @@ export async function updateMissingLore() {
 
   const previouslyUsedBlockNumber: number =
     (
-      await prisma.loreUpdate.findFirst({
+      await prisma.loreBlockUpdate.findFirst({
         orderBy: {
           upToBlockNumber: "desc",
         },
@@ -121,7 +121,7 @@ export async function updateMissingLore() {
       `Updated up to block ${upToBlockNumber}. Time taken ${timeTaken}`
     );
 
-    await prisma.loreUpdate.upsert({
+    await prisma.loreBlockUpdate.upsert({
       where: { upToBlockNumber: upToBlockNumber },
       update: { upToBlockNumber: upToBlockNumber, timeTaken: timeTaken },
       create: { upToBlockNumber: upToBlockNumber, timeTaken: timeTaken },
