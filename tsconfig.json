@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "outDir": "dist",
+    "target": "es2017",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
-    "lib": [
-      "esnext"
-    ],
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule" : true,
-    "module": "ESNext",
-    "moduleResolution" : "node"
-  }
+  },
+  "exclude":[
+    "./node_modules"
+  ]
 }

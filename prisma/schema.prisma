@@ -4,43 +4,81 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-model LoreUpdates {
-    id            String @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
-    upToBlockNumber   Int @unique
-    timeTaken     Int
+model LoreUpdate {
+  id              String @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  upToBlockNumber Int    @unique
+  timeTaken       Int
+
+  @@map("lore_update")
 }
 
-model LoreToken {
+model Token {
   id            String @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
   tokenContract String
   tokenId       Int
-  Lore          Lore[]
+  lore          Lore[]
 
+  Wizard Wizard[]
   @@unique([tokenContract, tokenId])
+  @@map("token")
+}
+
+model LoreImage {
+  id     String @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  href   String
+  lore   Lore   @relation(fields: [loreId], references: [id])
+  loreId String @db.Uuid
+
+  @@unique([loreId, href])
+  @@map("lore_image")
 }
 
 model Lore {
-  id                 String    @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  content            Json?
-  loreToken          LoreToken @relation(fields: [loreTokenId], references: [id])
-  loreTokenId        String    @db.Uuid
-  index              Int
-  creator            String
-  parentLoreIndex       Int
-  loreMetadataURI    String?
-  txHash             String @unique
-  createdAtBlock     BigInt
-  nsfw               Boolean
-  struck             Boolean
-  discordNotified    Boolean @default(false)
-  twitterNotified    Boolean @default(false)
+  id              String      @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  rawContent      Json?
+  markdownText    String?
+  previewText     String?
+  loreToken       Token       @relation(fields: [loreTokenId], references: [id])
+  loreTokenId     String      @db.Uuid
+  index           Int
+  creator         String
+  parentLoreIndex Int
+  loreMetadataURI String?
+  txHash          String      @unique
+  createdAtBlock  BigInt
+  nsfw            Boolean
+  struck          Boolean
+  discordNotified Boolean     @default(false)
+  twitterNotified Boolean     @default(false)
+  loreImages      LoreImage[]
+
+  @@map("lore")
+}
+
+model Wizard {
+  id              String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  token           Token    @relation(fields: [tokenId], references: [id])
+  tokenId         String   @unique @db.Uuid
+  name            String?
+  image           String?
+  background      String?
+  backgroundColor String?
+  body            String?
+  head            String?
+  prop            String?
+  familiar        String?
+  rune            String?
+  isBurnt         Boolean  @default(false)
+
+  @@map("wizard")
 }

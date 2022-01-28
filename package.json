@@ -1,37 +1,44 @@
 {
   "name": "frwc-data",
   "version": "0.0.0",
-  "type": "module",
-  "private": true,
   "node": "16.10.0",
   "engines": {
     "node": "16.10.0",
     "npm": "7.24.0"
   },
   "scripts": {
-    "fetch-lore": "node --experimental-json-modules --loader ts-node/esm ./index.ts",
-    "update-discord": "node --experimental-json-modules --loader ts-node/esm ./discord.ts"
+    "fetch-lore": "node --experimental-json-modules --loader ts-node/esm src/index.ts",
+    "update-discord": "node --experimental-json-modules --loader ts-node/esm src/notifications/discord.ts"
   },
   "dependencies": {
-    "@prisma/client": "3.1.1",
-    "cheerio": "^1.0.0-rc.10",
-    "discord.js": "^13.1.0",
-    "dotenv": "^10.0.0",
-    "ethers": "^5.4.7",
-    "node-fetch": "^3.0.0",
-    "remark-parse": "^10.0.0",
-    "remark-squeeze-paragraphs": "^5.0.0",
-    "ts-node": "^10.2.1",
-    "twit": "^2.2.11",
+    "@prisma/client": "3.8.1",
+    "axios": "^0.25.0",
+    "axios-retry": "^3.2.4",
+    "cheerio": "1.0.0-rc.10",
+    "discord.js": "13.6.0",
+    "dotenv": "14.3.2",
+    "ethcall": "^4.3.2",
+    "ethers": "5.5.3",
+    "lodash": "^4.17.21",
+    "marked": "^4.0.12",
+    "moralis": "^1.1.2",
+    "node-fetch": "3.2.0",
+    "remark-parse": "10.0.1",
+    "remark-squeeze-paragraphs": "5.0.1",
+    "twit": "2.2.11",
     "twitter-v2": "^1.1.0",
-    "unified": "^10.1.0",
-    "unist-util-visit": "^4.1.0"
+    "unified": "10.1.1",
+    "unist-util-visit": "4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^16.10.2",
-    "@types/twit": "^2.2.30",
-    "prettier": "^2.4.1",
-    "prisma": "3.1.1",
-    "typescript": "^4.4.3"
+    "@types/lodash": "^4.14.178",
+    "@types/marked": "^4.0.1",
+    "@types/node": "16.11.7",
+    "@types/twit": "2.2.30",
+    "prettier": "2.5.1",
+    "prettier-plugin-prisma": "^3.8.0",
+    "prisma": "3.8.1",
+    "ts-node": "10.4.0",
+    "typescript": "4.5.5"
   }
 }
