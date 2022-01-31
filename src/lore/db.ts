@@ -32,7 +32,7 @@ export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
       nsfw: entry.nsfw,
       parentLoreIndex: entry.parentLoreId,
       struck: entry.struck,
-      background_color: rawContent?.background_color,
+      backgroundColor: rawContent?.background_color,
       loreToken: {
         connectOrCreate: {
           create: {
