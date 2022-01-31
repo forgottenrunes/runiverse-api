@@ -11,7 +11,7 @@ generator client {
 }
 
 model LoreBlockUpdate {
-  id              String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id              String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   upToBlockNumber Int      @unique @map("up_to_block_number")
@@ -21,23 +21,22 @@ model LoreBlockUpdate {
 }
 
 model Token {
-  id            String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id            String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
   tokenContract String   @map("token_contract")
   tokenId       Int      @map("token_id")
   lore          Lore[]
-
-  wizard       Wizard[]
-  soul         Soul[]   @relation("token")
-  transmutedTo Soul[]   @relation("transmutedFromToken")
+  wizard        Wizard?
+  soul          Soul?    @relation("token")
+  transmutedTo  Soul?    @relation("transmutedFromToken")
 
   @@unique([tokenContract, tokenId])
   @@map("token")
 }
 
 model LoreImage {
-  id        String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id        String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   href      String
@@ -49,7 +48,7 @@ model LoreImage {
 }
 
 model Lore {
-  id              String      @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id              String      @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt       DateTime    @default(now()) @map("created_at")
   updatedAt       DateTime    @updatedAt @map("updated_at")
   rawContent      Json?       @map("raw_content")
@@ -74,7 +73,7 @@ model Lore {
 }
 
 model Wizard {
-  id              String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id              String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   token           Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
@@ -94,7 +93,7 @@ model Wizard {
 }
 
 model Soul {
-  id                    String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id                    String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
   token                 Token    @relation("token", fields: [tokenId], references: [id], onDelete: Cascade)
@@ -116,7 +115,7 @@ model Soul {
 }
 
 model SoulsBlockUpdate {
-  id              String   @id @default(dbgenerated("(uuid_generate_v4())")) @db.Uuid
+  id              String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   upToBlockNumber Int      @unique @map("up_to_block_number")
