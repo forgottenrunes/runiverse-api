@@ -103,13 +103,17 @@ export async function updateMissingLore() {
   );
 
   for (let i = 1; i <= blockBatches; i++) {
-    const blockNumber = previouslyUsedBlockNumber + i * BLOCK_BATCH_SIZE;
+    let blockNumber = previouslyUsedBlockNumber + i * BLOCK_BATCH_SIZE;
     const previousBlockNumber =
       previouslyUsedBlockNumber + (i - 1) * BLOCK_BATCH_SIZE;
 
+    if (blockNumber > currentBlockNumber) {
+      blockNumber = currentBlockNumber;
+    }
+
     const t0 = performance.now();
 
-    const { entries, upToBlockNumber } = await fetchLoreChanges(
+    const { entries } = await fetchLoreChanges(
       previousBlockNumber,
       blockNumber
     );
@@ -118,14 +122,12 @@ export async function updateMissingLore() {
 
     const timeTaken = Math.round(performance.now() - t0);
 
-    console.log(
-      `Updated up to block ${upToBlockNumber}. Time taken ${timeTaken}`
-    );
+    console.log(`Updated up to block ${blockNumber}. Time taken ${timeTaken}`);
 
     await prisma.loreBlockUpdate.upsert({
-      where: { upToBlockNumber: upToBlockNumber },
-      update: { upToBlockNumber: upToBlockNumber, timeTaken: timeTaken },
-      create: { upToBlockNumber: upToBlockNumber, timeTaken: timeTaken },
+      where: { upToBlockNumber: blockNumber },
+      update: { upToBlockNumber: blockNumber, timeTaken: timeTaken },
+      create: { upToBlockNumber: blockNumber, timeTaken: timeTaken },
     });
   }
 }

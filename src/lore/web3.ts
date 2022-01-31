@@ -37,7 +37,7 @@ function getProvider() {
 export async function fetchLoreChanges(
   sinceBlock: number,
   upToBlockNumber: number
-): Promise<{ entries: LoreEntry[]; upToBlockNumber: number }> {
+): Promise<{ entries: LoreEntry[] }> {
   const provider = getProvider();
 
   const contract = new Contract(
@@ -117,5 +117,5 @@ export async function fetchLoreChanges(
 
   console.log("Lore fetched successfully....");
 
-  return { entries: combinedData, upToBlockNumber: upToBlockNumber };
+  return { entries: combinedData };
 }
