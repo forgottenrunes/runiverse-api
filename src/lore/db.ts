@@ -90,6 +90,7 @@ export async function updateMissingLore() {
     )?.upToBlockNumber ??
     parseInt(process.env.BOOK_OF_LORE_FIRST_BLOCK as string);
 
+  console.log(`Current log number is ${currentBlockNumber}`);
   console.log(`Last updated block number was ${previouslyUsedBlockNumber}`);
 
   const blockBatches =
