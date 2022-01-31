@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { fetchLoreChanges, getCurrentBlockNumber, LoreEntry } from "./web3";
+import { fetchLoreChanges, LoreEntry } from "./web3";
 
 import { PrismaClient } from "@prisma/client";
-import { fetchAndDehydrateLore } from "./ipfs";
-
 const prisma = new PrismaClient();
+import { fetchAndDehydrateLore } from "./ipfs";
+import { getCurrentBlockNumber } from "../lib/web3";
 
 const BLOCK_BATCH_SIZE = 10000;
 
@@ -32,6 +32,7 @@ export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
       nsfw: entry.nsfw,
       parentLoreIndex: entry.parentLoreId,
       struck: entry.struck,
+      background_color: rawContent?.background_color,
       loreToken: {
         connectOrCreate: {
           create: {

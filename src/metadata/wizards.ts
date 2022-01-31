@@ -9,7 +9,7 @@ import { find } from "lodash";
 
 const prisma = new PrismaClient();
 
-const WIZARDS_CONTRACT = process.env.WIZARDS_CONTRACT as string;
+export const WIZARDS_CONTRACT = process.env.WIZARDS_CONTRACT as string;
 
 export async function updateMetadata() {
   const json = JSON.parse(

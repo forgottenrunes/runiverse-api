@@ -2,13 +2,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import zipWith from "lodash/zipWith";
-import { Contract, providers } from "ethers";
+import { Contract } from "ethers";
 import { BOOK_OF_LORE_ABI } from "../abis/BookOfLore";
 
 import {
   Contract as MultiCallContract,
   Provider as MultiCallProvider,
 } from "ethcall";
+import { getProvider } from "../lib/web3";
 
 export type LoreEntry = {
   tokenContract: string;
@@ -22,17 +23,6 @@ export type LoreEntry = {
   struck: boolean;
   loreMetadataURI: string;
 };
-
-export async function getCurrentBlockNumber() {
-  return await getProvider().getBlockNumber();
-}
-
-function getProvider() {
-  const provider = new providers.AlchemyProvider(
-    parseInt(process.env.CHAIN_ID as string)
-  );
-  return provider;
-}
 
 export async function fetchLoreChanges(
   sinceBlock: number,
