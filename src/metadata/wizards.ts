@@ -36,20 +36,6 @@ export async function updateMetadata() {
       familiar: find(attributes, { trait_type: "familiar" })?.value,
       prop: find(attributes, { trait_type: "prop" })?.value,
       rune: find(attributes, { trait_type: "rune" })?.value,
-      token: {
-        connectOrCreate: {
-          create: {
-            tokenContract: WIZARDS_CONTRACT.toLowerCase(),
-            tokenId: parseInt(id),
-          },
-          where: {
-            tokenContract_tokenId: {
-              tokenContract: WIZARDS_CONTRACT.toLowerCase(),
-              tokenId: parseInt(id),
-            },
-          },
-        },
-      },
     };
 
     const token = await prisma.token.findUnique({
@@ -67,11 +53,29 @@ export async function updateMetadata() {
         where: {
           tokenId: token.id,
         },
-        update: updateData,
-        create: updateData,
+        update: { ...updateData, tokenId: token.id },
+        create: { ...updateData, tokenId: token.id },
       });
     } else {
-      await prisma.wizard.create({ data: updateData });
+      await prisma.wizard.create({
+        data: {
+          ...updateData,
+          token: {
+            connectOrCreate: {
+              create: {
+                tokenContract: WIZARDS_CONTRACT.toLowerCase(),
+                tokenId: parseInt(id),
+              },
+              where: {
+                tokenContract_tokenId: {
+                  tokenContract: WIZARDS_CONTRACT.toLowerCase(),
+                  tokenId: parseInt(id),
+                },
+              },
+            },
+          },
+        },
+      });
     }
   }
 }

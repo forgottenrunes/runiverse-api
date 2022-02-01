@@ -33,7 +33,7 @@ export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
       parentLoreIndex: entry.parentLoreId,
       struck: entry.struck,
       backgroundColor: rawContent?.background_color,
-      loreToken: {
+      token: {
         connectOrCreate: {
           create: {
             tokenContract: entry.tokenContract.toLowerCase(),

@@ -11,115 +11,107 @@ generator client {
 }
 
 model LoreBlockUpdate {
-  id              String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  upToBlockNumber Int      @unique @map("up_to_block_number")
-  timeTaken       Int      @map("time_taken")
-
-  @@map("lore_update")
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
 }
 
 model Token {
-  id            String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-  tokenContract String   @map("token_contract")
-  tokenId       Int      @map("token_id")
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tokenContract String
+  tokenId       Int
   lore          Lore[]
   wizard        Wizard?
   soul          Soul?    @relation("token")
   transmutedTo  Soul?    @relation("transmutedFromToken")
 
   @@unique([tokenContract, tokenId])
-  @@map("token")
 }
 
 model LoreImage {
-  id        String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   href      String
   lore      Lore     @relation(fields: [loreId], references: [id], onDelete: Cascade)
-  loreId    String   @map("lore_id") @db.Uuid
+  loreId    String   @db.Uuid
 
   @@unique([loreId, href])
-  @@map("lore_image")
 }
 
 model Lore {
-  id              String      @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime    @updatedAt @map("updated_at")
-  rawContent      Json?       @map("raw_content")
-  backgroundColor String?     @map("background_color")
-  markdownText    String?     @map("markdown_text")
-  previewText     String?     @map("preview_text")
-  loreToken       Token       @relation(fields: [loreTokenId], references: [id], onDelete: Cascade)
-  loreTokenId     String      @map("lore_token_id") @db.Uuid
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  rawContent      Json?
+  backgroundColor String?
+  markdownText    String?
+  previewText     String?
+  token           Token       @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId         String      @db.Uuid
   index           Int
   creator         String
-  parentLoreIndex Int         @map("parent_lore_index")
-  loreMetadataURI String?     @map("lore_metadata_uri")
-  txHash          String      @unique @map("tx_hash")
-  createdAtBlock  BigInt      @map("created_at_block")
+  parentLoreIndex Int
+  loreMetadataURI String?
+  txHash          String      @unique
+  createdAtBlock  BigInt
   nsfw            Boolean
   struck          Boolean
-  discordNotified Boolean     @default(false) @map("discord_notified")
-  twitterNotified Boolean     @default(false) @map("twitter_notified")
+  discordNotified Boolean     @default(false)
+  twitterNotified Boolean     @default(false)
   loreImages      LoreImage[]
 
-  @@map("lore")
 }
 
 model Wizard {
-  id              String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   token           Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
-  tokenId         String   @unique @map("token_id") @db.Uuid
+  tokenId         String   @unique @db.Uuid
   name            String?
   image           String?
   background      String?
-  backgroundColor String?  @map("background_color")
+  backgroundColor String?
   body            String?
   head            String?
   prop            String?
   familiar        String?
   rune            String?
-  isBurnt         Boolean  @default(false) @map("is_burnt")
+  isBurnt         Boolean  @default(false)
 
-  @@map("wizard")
 }
 
 model Soul {
-  id                    String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
   token                 Token    @relation("token", fields: [tokenId], references: [id], onDelete: Cascade)
-  tokenId               String   @unique @map("token_id") @db.Uuid
+  tokenId               String   @unique @db.Uuid
   transmutedFromToken   Token    @relation("transmutedFromToken", fields: [transmutedFromTokenId], references: [id], onDelete: Cascade)
-  transmutedFromTokenId String   @unique @map("transmuted_from_token_id") @db.Uuid
+  transmutedFromTokenId String   @unique @db.Uuid
   name                  String?
   image                 String?
   background            String?
-  backgroundColor       String?  @map("background_color")
+  backgroundColor       String?
   body                  String?
   head                  String?
   prop                  String?
   familiar              String?
   rune                  String?
-  burnIndex             Int      @map("burn_index")
+  burnIndex             Int
 
-  @@map("soul")
 }
 
 model SoulsBlockUpdate {
-  id              String   @id @default(dbgenerated("(uuid_generate_v4()::UUID)")) @db.Uuid
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  upToBlockNumber Int      @unique @map("up_to_block_number")
-  timeTaken       Int      @map("time_taken")
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
 
-  @@map("souls_update")
 }

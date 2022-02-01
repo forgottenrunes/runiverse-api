@@ -112,7 +112,7 @@ async function updateDbWithMissingSouls(entries: SoulEntry[]) {
         select: { id: true, wizard: true },
       });
 
-      if (wizardToken && wizardToken.wizard.length > 0) {
+      if (wizardToken && wizardToken.wizard) {
         await prisma.wizard.update({
           where: {
             tokenId: wizardToken.id,
