@@ -64,7 +64,15 @@ model Lore {
   discordNotified Boolean     @default(false)
   twitterNotified Boolean     @default(false)
   loreImages      LoreImage[]
+}
 
+model LoreContract {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tokenContract String   @unique
+  slug          String   @unique
+  order         Int      @unique
 }
 
 model Wizard {
