@@ -3,7 +3,7 @@ import { getCurrentBlockNumber } from "../lib/web3";
 import { fetchNewOwnerships } from "./web3";
 
 const prisma = new PrismaClient();
-const BLOCK_BATCH_SIZE = 10000;
+const BLOCK_BATCH_SIZE = 2000;
 
 export async function updateNewOwnerships(
   blockUpdateDbModel:
