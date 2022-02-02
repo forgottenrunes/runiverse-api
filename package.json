@@ -10,7 +10,9 @@
     "build" : "tsc",
     "fetch-lore": "node --enable-source-maps dist/lore/cron.js",
     "update-wizards-metadata": "node --enable-source-maps dist/metadata/wizards-cron.js",
+    "update-wizards-ownership": "node --enable-source-maps dist/metadata/wizards-ownership-cron.js",
     "update-souls-metadata": "node --enable-source-maps dist/metadata/souls-cron.js",
+    "update-souls-ownership": "node --enable-source-maps dist/metadata/souls-ownership-cron.js",
     "update-discord": "node --enable-source-maps dist/notifications/discord.js"
   },
   "dependencies": {
