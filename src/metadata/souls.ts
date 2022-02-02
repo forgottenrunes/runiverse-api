@@ -12,7 +12,7 @@ dotenv.config();
 
 const BLOCK_BATCH_SIZE = 10000;
 
-const SOULS_CONTRACT = process.env.SOULS_CONTRACT as string;
+export const SOULS_CONTRACT = process.env.SOULS_CONTRACT as string;
 
 async function updateDbWithMissingSouls(entries: SoulEntry[]) {
   for (let i = 0; i < entries.length; i++) {

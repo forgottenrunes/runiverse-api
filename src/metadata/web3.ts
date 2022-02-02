@@ -4,6 +4,7 @@ import { getProvider } from "../lib/web3";
 import { SOULS_ABI } from "../abis/Souls";
 import axios from "axios";
 import axiosRetry from "axios-retry";
+import { ERC721_LITE_ABI } from "../abis/erc721";
 
 dotenv.config();
 
@@ -95,4 +96,38 @@ export async function fetchNewSouls(
   console.log("Souls fetched successfully....");
 
   return entries;
+}
+
+type NewOwnerships = {
+  [tokenId: number]: string;
+};
+
+export async function fetchNewOwnerships(
+  sinceBlock: number,
+  upToBlockNumber: number,
+  contractAddress: string
+): Promise<NewOwnerships> {
+  const provider = getProvider();
+
+  const contract = new Contract(contractAddress, ERC721_LITE_ABI, provider);
+
+  console.log(`Previous block number: ${sinceBlock}`);
+  console.log(`Looking up to block number: ${upToBlockNumber}`);
+
+  console.log(`Fetching transfers from ze chain....`);
+
+  const transfers = await contract.queryFilter(
+    contract.filters.Transfer(),
+    sinceBlock,
+    upToBlockNumber
+  );
+
+  const results: NewOwnerships = {};
+
+  for (let i = 0; i < transfers.length; i++) {
+    const transferEvent = transfers[i];
+    results[transferEvent.args?.tokenId.toNumber()] = transferEvent.args?.to;
+  }
+
+  return results;
 }

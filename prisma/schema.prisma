@@ -28,6 +28,7 @@ model Token {
   wizard        Wizard?
   soul          Soul?    @relation("token")
   transmutedTo  Soul?    @relation("transmutedFromToken")
+  currentOwner  String?  @db.Citext
 
   @@unique([tokenContract, tokenId])
 }
@@ -54,7 +55,7 @@ model Lore {
   token           Token       @relation(fields: [tokenId], references: [id], onDelete: Cascade)
   tokenId         String      @db.Uuid
   index           Int
-  creator         String
+  creator         String      @db.Citext
   parentLoreIndex Int
   loreMetadataURI String?
   txHash          String      @unique
@@ -121,5 +122,20 @@ model SoulsBlockUpdate {
   updatedAt       DateTime @updatedAt
   upToBlockNumber Int      @unique
   timeTaken       Int
+}
 
+model WizardOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model SoulOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
 }
