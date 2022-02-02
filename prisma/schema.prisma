@@ -22,7 +22,7 @@ model Token {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  tokenContract String
+  tokenContract String   @db.Citext
   tokenId       Int
   lore          Lore[]
   wizard        Wizard?
@@ -70,7 +70,7 @@ model LoreContract {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  tokenContract String   @unique
+  tokenContract String   @unique @db.Citext
   slug          String   @unique
   order         Int      @unique
 }
