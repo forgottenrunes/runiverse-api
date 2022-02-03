@@ -134,6 +134,7 @@ model Pony {
   tokenId         String   @unique @db.Uuid
   name            String?
   image           String?
+  generation      String?
   background      String?
   backgroundColor String?
   clothes         String?

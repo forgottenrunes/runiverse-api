@@ -32,6 +32,7 @@ async function updateDbWithMissingPonies(entries: PonyEntry[]) {
       name: metadata?.name,
       image: metadata?.image,
       genes: entry.genes,
+      generation: find(attributes, { trait_type: "Generation" })?.value,
       background: find(attributes, { trait_type: "background" })?.value,
       pony: find(attributes, { trait_type: "pony" })?.value,
       head: find(attributes, { trait_type: "head" })?.value,
@@ -96,7 +97,7 @@ export async function updateMissingPonies() {
     ) + 1;
 
   console.log(
-    `Will update lore in ${blockBatches} batches of ${BLOCK_BATCH_SIZE} blocks`
+    `Will update in ${blockBatches} batches of ${BLOCK_BATCH_SIZE} blocks`
   );
 
   for (let i = 1; i <= blockBatches; i++) {
