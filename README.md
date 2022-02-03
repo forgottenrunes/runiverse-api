@@ -24,7 +24,7 @@ We deploy to Heroku and use a cron to run scripts from packages.json on a timer.
 
 ### Where is the GraphQL part?
 
-We rely on Hasura to give us a managed GraphQL API directly from our database. Sample queries are below (but you can use schema introspection to find all the fields and relationships).
+We rely on Hasura to give us a managed GraphQL API directly from our database. Sample queries are below (but you can use schema introspection to find all the fields and relationships). You can use this public endpoint (subject to change) for now. It has prod data updated roughly every 10 minutes: https://resolved-viper-89.hasura.app/v1/graphql
 
 
 #### Token counts
