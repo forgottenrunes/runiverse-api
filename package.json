@@ -1,6 +1,6 @@
 {
   "name": "frwc-data",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "node": "16.10.0",
   "engines": {
     "node": "16.10.0",
