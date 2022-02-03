@@ -8,7 +8,8 @@ const BLOCK_BATCH_SIZE = 2000;
 export async function updateNewOwnerships(
   blockUpdateDbModel:
     | Prisma.WizardOwnershipBlockUpdateDelegate<any>
-    | Prisma.SoulOwnershipBlockUpdateDelegate<any>,
+    | Prisma.SoulOwnershipBlockUpdateDelegate<any>
+    | Prisma.PonyOwnershipBlockUpdateDelegate<any>,
   defaultFirstBlockNumber: number,
   contractAddress: string
 ) {

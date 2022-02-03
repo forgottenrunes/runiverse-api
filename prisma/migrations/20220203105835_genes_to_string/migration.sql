@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Pony" ALTER COLUMN "genes" SET DATA TYPE TEXT;

@@ -7,12 +7,11 @@
     "npm": "7.24.0"
   },
   "scripts": {
-    "build" : "tsc",
+    "build": "tsc",
     "fetch-lore": "node --enable-source-maps dist/lore/cron.js",
     "update-wizards-metadata": "node --enable-source-maps dist/metadata/wizards-cron.js",
-    "update-wizards-ownership": "node --enable-source-maps dist/metadata/wizards-ownership-cron.js",
-    "update-souls-metadata": "node --enable-source-maps dist/metadata/souls-cron.js",
-    "update-souls-ownership": "node --enable-source-maps dist/metadata/souls-ownership-cron.js",
+    "update-ongoing-mints-metadata": "node --enable-source-maps dist/metadata/ongoing-mints-cron.js",
+    "update-ownerships": "node --enable-source-maps dist/metadata/ownerships-cron.js",
     "update-discord": "node --enable-source-maps dist/notifications/discord.js"
   },
   "dependencies": {
@@ -42,7 +41,7 @@
     "prettier": "2.5.1",
     "prettier-plugin-prisma": "^3.8.0",
     "prisma": "3.8.1",
-    "typescript": "4.5.5",
-    "ts-node": "10.4.0"
+    "ts-node": "10.4.0",
+    "typescript": "4.5.5"
   }
 }
