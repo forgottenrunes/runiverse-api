@@ -67,6 +67,8 @@ model Lore {
   discordNotified Boolean     @default(false)
   twitterNotified Boolean     @default(false)
   loreImages      LoreImage[]
+
+  @@unique([tokenId, index])
 }
 
 model LoreContract {

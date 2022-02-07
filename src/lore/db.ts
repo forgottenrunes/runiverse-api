@@ -55,12 +55,30 @@ export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
       createdAtBlock: entry.createdAtBlock,
     };
 
-    const updatedLore = await prisma.lore.upsert({
-      where: { txHash: updateData.txHash },
-      update: updateData,
-      create: updateData,
-      select: { id: true },
+    const existingLore = await prisma.lore.findFirst({
+      where: {
+        index: entry.loreIndex,
+        token: {
+          tokenContract: entry.tokenContract.toLowerCase(),
+          tokenId: entry.tokenId,
+        },
+      },
     });
+
+    let updatedLore: any;
+
+    if (existingLore) {
+      updatedLore = await prisma.lore.update({
+        where: { id: existingLore.id },
+        data: updateData,
+        select: { id: true },
+      });
+    } else {
+      updatedLore = await prisma.lore.create({
+        data: updateData,
+        select: { id: true },
+      });
+    }
 
     console.log(`Updating ${images.length} images`);
 
