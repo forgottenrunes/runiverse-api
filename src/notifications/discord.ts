@@ -87,8 +87,12 @@ where  "discordNotified" = false and "nsfw" = false order by "createdAtBlock" as
 limit 10;`
   );
 
+  console.log(`Got ${lores.length} new lore entries`);
+
   for (let i = 0; i < lores.length; i++) {
     const lore = lores[i];
+
+    console.log(`Notifying about lore ${lore.id} ${lore.slug} ${lore.tokenId}`);
 
     const character = CHARACTER_SETTINGS[lore.slug.toLowerCase()].singularName;
 
