@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "node": "16.10.0",
   "engines": {
-    "node": "16.10.0",
-    "npm": "7.24.0"
+    "node": "16",
+    "npm": "7"
   },
   "scripts": {
     "build": "tsc",

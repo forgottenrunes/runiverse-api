@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 const client = new Client({ intents: [Intents.FLAGS.GUILD_MESSAGES] });
 
 const IPFS_SERVER =
-  process.env.NEXT_PUBLIC_IPFS_SERVER ??
+  process.env.IPFS_SERVER ??
   "https://res.cloudinary.com/dopby768d/image/fetch/f_auto/https://nfts.forgottenrunes.com/ipfs";
 
 const CHARACTER_SETTINGS: {
@@ -66,7 +66,7 @@ function getOgImage(
   return `https://og.forgottenrunes.com/${encodeURI(story).replace(
     /\./g,
     "%2E"
-  )}.png?${queryString}}`;
+  )}.png?${queryString}`;
 }
 
 // When the client is ready, run this code (only once)
