@@ -8,12 +8,15 @@ axiosRetry(axios, { retries: 3 });
 const IPFS_SERVER =
   process.env.IPFS_SERVER ?? "https://nfts.forgottenrunes.com/ipfs";
 
-export async function fetchAndDehydrateLore(loreMetadataURI: string): Promise<{
+export async function fetchAndDehydrateLore(loreMetadataURI?: string): Promise<{
   rawContent?: any;
   markdownText?: string;
   previewText?: string;
   images: string[];
 }> {
+  if (!loreMetadataURI) {
+    return { images: [] };
+  }
   const ipfsURL = `${IPFS_SERVER}/${
     loreMetadataURI.match(/^ipfs:\/\/(.*)$/)?.[1]
   }`;

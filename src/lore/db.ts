@@ -18,11 +18,6 @@ export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
       `Updating new entry sequence #${i} for ${entry.tokenContract}-${entry.tokenId}-${entry.loreIndex}`
     );
 
-    if (!entry.loreMetadataURI) {
-      console.log("Skipping update as metadata is not defined");
-      continue;
-    }
-
     const { markdownText, previewText, images, rawContent } =
       await fetchAndDehydrateLore(entry.loreMetadataURI);
 

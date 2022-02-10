@@ -60,7 +60,7 @@ model Lore {
   creator         String      @db.Citext
   parentLoreIndex Int
   loreMetadataURI String?
-  txHash          String      @unique
+  txHash          String      @unique @db.Citext
   createdAtBlock  BigInt
   nsfw            Boolean
   struck          Boolean
@@ -71,7 +71,7 @@ model Lore {
   @@unique([tokenId, index])
 }
 
-model LoreContract {
+model Contract {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
