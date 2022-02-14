@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ConfigModule } from './config/config.module';
+import { EnvVariableValidation } from './config/env.validation';
 
 @Module({
-  imports: [],
+  imports: [ConfigModule, EnvVariableValidation],
   controllers: [AppController],
   providers: [AppService],
 })
