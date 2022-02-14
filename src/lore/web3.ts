@@ -1,6 +1,4 @@
 import dotenv from "dotenv";
-dotenv.config();
-
 import zipWith from "lodash/zipWith";
 import { Contract } from "ethers";
 import { BOOK_OF_LORE_ABI } from "../abis/BookOfLore";
@@ -10,6 +8,8 @@ import {
   Provider as MultiCallProvider,
 } from "ethcall";
 import { getProvider } from "../lib/web3";
+
+dotenv.config();
 
 export type LoreEntry = {
   tokenContract: string;
@@ -24,17 +24,23 @@ export type LoreEntry = {
   loreMetadataURI: string;
 };
 
+export function getBookOfLoreContract() {
+  const provider = getProvider();
+
+  return new Contract(
+    process.env.BOOK_OF_LORE_CONTRACT as string,
+    BOOK_OF_LORE_ABI,
+    provider
+  );
+}
+
 export async function fetchLoreChanges(
   sinceBlock: number,
   upToBlockNumber: number
 ): Promise<{ entries: LoreEntry[] }> {
   const provider = getProvider();
 
-  const contract = new Contract(
-    process.env.BOOK_OF_LORE_CONTRACT as string,
-    BOOK_OF_LORE_ABI,
-    provider
-  );
+  const contract = getBookOfLoreContract();
 
   console.log(`Previous block number: ${sinceBlock}`);
   console.log(`Looking up to block number: ${upToBlockNumber}`);
