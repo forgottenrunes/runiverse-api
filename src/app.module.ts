@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 import { EnvVariableValidation } from './config/env.validation';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [ConfigModule, EnvVariableValidation],
+  imports: [EnvVariableValidation, ConfigModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })

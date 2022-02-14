@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model LoreBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model Token {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tokenContract String   @db.Citext
+  tokenId       Int
+  lore          Lore[]
+  wizard        Wizard?
+  soul          Soul?    @relation("token")
+  pony          Pony?
+
+  transmutedTo Soul?   @relation("transmutedFromToken")
+  currentOwner String? @db.Citext
+
+  @@unique([tokenContract, tokenId])
+}
+
+model LoreImage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  href      String
+  lore      Lore     @relation(fields: [loreId], references: [id], onDelete: Cascade)
+  loreId    String   @db.Uuid
+
+  @@unique([loreId, href])
+}
+
+model Lore {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  rawContent      Json?
+  backgroundColor String?
+  markdownText    String?
+  previewText     String?
+  token           Token       @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId         String      @db.Uuid
+  index           Int
+  creator         String      @db.Citext
+  parentLoreIndex Int
+  loreMetadataURI String?
+  txHash          String      @unique @db.Citext
+  createdAtBlock  BigInt
+  nsfw            Boolean
+  struck          Boolean
+  discordNotified Boolean     @default(false)
+  twitterNotified Boolean     @default(false)
+  loreImages      LoreImage[]
+
+  @@unique([tokenId, index])
+}
+
+model Contract {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tokenContract String   @unique @db.Citext
+  slug          String   @unique
+  order         Int      @unique
+}
+
+model Wizard {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  token           Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId         String   @unique @db.Uuid
+  name            String?
+  image           String?
+  background      String?
+  backgroundColor String?
+  body            String?
+  head            String?
+  prop            String?
+  familiar        String?
+  rune            String?
+  isBurnt         Boolean  @default(false)
+
+}
+
+model Soul {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  token                 Token    @relation("token", fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId               String   @unique @db.Uuid
+  transmutedFromToken   Token    @relation("transmutedFromToken", fields: [transmutedFromTokenId], references: [id], onDelete: Cascade)
+  transmutedFromTokenId String   @unique @db.Uuid
+  name                  String?
+  image                 String?
+  background            String?
+  backgroundColor       String?
+  body                  String?
+  head                  String?
+  prop                  String?
+  familiar              String?
+  rune                  String?
+  burnIndex             Int
+
+}
+
+model SoulsBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model Pony {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  token           Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId         String   @unique @db.Uuid
+  name            String?
+  image           String?
+  generation      Int?
+  background      String?
+  backgroundColor String?
+  clothes         String?
+  head            String?
+  mouth           String?
+  pony            String?
+  rune            String?
+  genes           String?
+}
+
+model PoniesBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model WizardOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model SoulOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model PonyOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
