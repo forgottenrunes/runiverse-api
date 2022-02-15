@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2020",
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "sourceMap" : true
+    "sourceMap" : true,
   },
   "exclude":[
     "./node_modules"

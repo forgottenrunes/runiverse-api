@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import zipWith from "lodash/zipWith";
 import { Contract } from "ethers";
 import { BOOK_OF_LORE_ABI } from "../abis/BookOfLore";
 
@@ -8,6 +7,7 @@ import {
   Provider as MultiCallProvider,
 } from "ethcall";
 import { getProvider } from "../lib/web3";
+import zipWith from "lodash/zipWith";
 
 dotenv.config();
 
