@@ -1,11 +1,10 @@
 import dotenv from "dotenv";
+dotenv.config();
 import { promises as fs } from "fs";
 import path from "path";
 
 import { PrismaClient } from "@prisma/client";
 import { find } from "lodash";
-
-dotenv.config();
 
 const prisma = new PrismaClient();
 

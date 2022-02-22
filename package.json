@@ -16,14 +16,17 @@
     "listener": "node --enable-source-maps dist/listener.js"
   },
   "dependencies": {
+    "@assistant/conversation": "^3.8.1",
     "@prisma/client": "3.9.2",
     "axios": "0.26.0",
     "axios-retry": "3.2.4",
+    "body-parser": "^1.19.2",
     "cheerio": "1.0.0-rc.10",
     "discord.js": "13.6.0",
     "dotenv": "14.3.2",
     "ethcall": "4.3.5",
     "ethers": "5.5.4",
+    "express": "^4.17.3",
     "fastq": "^1.13.0",
     "lodash": "4.17.21",
     "marked": "4.0.12",
