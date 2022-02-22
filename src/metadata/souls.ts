@@ -2,7 +2,6 @@ import { getCurrentBlockNumber } from '../lib/web3';
 
 import { PrismaClient } from '@prisma/client';
 import { fetchNewSouls, SoulEntry } from './web3';
-import dotenv from 'dotenv';
 import { find } from 'lodash';
 import { WIZARDS_CONTRACT } from './wizards';
 

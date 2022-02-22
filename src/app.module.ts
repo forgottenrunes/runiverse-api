@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 import { EnvVariableValidation } from './config/env.validation';
 import { PrismaModule } from './prisma/prisma.module';
+import { Web3Module } from './web3/web3.module';
 
 @Module({
-  imports: [EnvVariableValidation, ConfigModule, PrismaModule],
+  imports: [EnvVariableValidation, ConfigModule, PrismaModule, Web3Module],
   controllers: [AppController],
   providers: [AppService],
 })
