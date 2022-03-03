@@ -3,14 +3,19 @@ dotenv.config();
 
 import { fetchLoreChanges, LoreEntry } from "./web3";
 
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import { fetchAndDehydrateLore } from "./ipfs";
 import { getCurrentBlockNumber } from "../lib/web3";
+import axios from "axios";
 
 const BLOCK_BATCH_SIZE = 10000;
 
-export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
+export async function updateDbWithLoreEntries(
+  entries: LoreEntry[]
+): Promise<number> {
+  let countUpdated = 0;
+
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i];
 
@@ -86,6 +91,36 @@ export async function updateDbWithLoreEntries(entries: LoreEntry[]) {
         create: { loreId: updatedLore.id, href: imageHref },
       });
     }
+
+    countUpdated += 1;
+  }
+
+  return countUpdated;
+}
+
+export async function rebuildLoreWebPages(fromBlock: number, toBlock: number) {
+  if (!process.env.LORE_REVALIDATION_URL) {
+    console.warn(
+      "Not requesting website page rebuilds for new lore as env var not set."
+    );
+  }
+
+  const lores: any[] = await prisma.$queryRaw(
+    Prisma.sql`select * from "PaginatedLore" as l where  "createdAtBlock" >= ${fromBlock} and"createdAtBlock" <= ${toBlock}`
+  );
+
+  for (let i = 0; i < lores.length; i++) {
+    const lore = lores[i];
+
+    const revalidateUrl = `${process.env.LORE_REVALIDATION_URL}&tokenSlug=${lore.slug}&tokenId=${lore.tokenId}&page=${lore.page}`;
+
+    let res;
+    try {
+      console.log(`Revalidating ${revalidateUrl}`);
+      res = await axios.get(revalidateUrl);
+    } catch (e: any) {
+      console.error(`Will skip ${revalidateUrl} due to an error`);
+    }
   }
 }
 
@@ -132,7 +167,18 @@ export async function updateMissingLore() {
       blockNumber
     );
 
-    await updateDbWithLoreEntries(entries);
+    const countUpdated = await updateDbWithLoreEntries(entries);
+
+    if (countUpdated > 0) {
+      if (countUpdated <= 10) {
+        console.log("Forcing NextJS rebuild of updated lore pages...");
+        await rebuildLoreWebPages(previousBlockNumber, blockNumber);
+      } else {
+        console.log(
+          "We updated more than 10 lores in one go so not rebuilding NextJS pages. Consider kicking off a build once all caught up."
+        );
+      }
+    }
 
     const timeTaken = Math.round(performance.now() - t0);
 
