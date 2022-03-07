@@ -5,14 +5,13 @@ import bodyParser from "body-parser";
 import { WIZARDS_CONTRACT } from "./metadata/wizards";
 
 import { PrismaClient } from "@prisma/client";
+import markdownToTxt from "./lib/markdown";
 
 dotenv.config();
 
 const prisma = new PrismaClient();
 
 const app = conversation();
-
-// Register handlers for Actions SDK
 
 app.handle("lore_handler", async (conv) => {
   console.log(conv.intent.params);
@@ -49,18 +48,19 @@ app.handle("lore_handler", async (conv) => {
     },
     orderBy: { index: "asc" },
   });
-  console.log(lore);
 
   if (lore.length === 0) {
     conv.add("Found them, but they got no lore");
     return;
   }
+
   conv.add(`Reading lore for ${wizard?.name}`);
-  conv.add(`${lore[0].previewText}`);
+  conv.add(`${markdownToTxt(lore[0].markdownText ?? "")}`);
 });
 
 const expressApp = express().use(bodyParser.json());
-
 expressApp.post("/fulfillment", app);
 
-expressApp.listen(3000);
+expressApp.listen(process.env.PORT || 3000, () =>
+  console.log("Server is running...")
+);

@@ -13,7 +13,8 @@
     "update-ongoing-mints-metadata": "node --enable-source-maps dist/metadata/ongoing-mints-cron.js",
     "update-ownerships": "node --enable-source-maps dist/metadata/ownerships-cron.js",
     "update-discord": "node --enable-source-maps dist/notifications/discord.js",
-    "listener": "node --enable-source-maps dist/listener.js"
+    "listener": "node --enable-source-maps dist/listener.js",
+    "google-actions-listener": "node --enable-source-maps dist/google-actions-listener.js"
   },
   "dependencies": {
     "@assistant/conversation": "^3.8.1",
