@@ -74,10 +74,41 @@ app.handle("lore_handler", async (conv) => {
 
 const expressApp = express().use(bodyParser.json());
 expressApp.post("/fulfillment", app);
-expressApp.post("/alexa-fulfillment", (req) => {
-  console.log("Hello Alexa");
-  console.log(JSON.stringify(req.body.request));
-  return "";
+expressApp.post("/alexa-fulfillment", async (req, res) => {
+  console.log(req.body);
+  const token = await prisma.token.findUnique({
+    where: {
+      tokenContract_tokenId: {
+        tokenContract: WIZARDS_CONTRACT.toLowerCase(),
+        tokenId: parseInt(req.body.wizardId),
+      },
+    },
+    select: { id: true },
+  });
+
+  if (!token) {
+    return res.json({ lore: "Whoops, nothing found for this wizard id..." });
+  }
+
+  const wizard = await prisma.wizard.findUnique({
+    where: {
+      tokenId: token.id,
+    },
+    select: { name: true },
+  });
+
+  const lore = await prisma.lore.findMany({
+    where: {
+      tokenId: token.id,
+    },
+    orderBy: { index: "asc" },
+  });
+
+  if (lore.length === 0) {
+    return res.json({ lore: "Found wizard, but they got no lore." });
+  }
+
+  return res.json({ lore: `${markdownToTxt(lore[0].markdownText ?? "")}` });
 });
 
 expressApp.listen(process.env.PORT || 3000, () =>
