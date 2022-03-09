@@ -16,6 +16,11 @@ const app = conversation();
 app.handle("lore_handler", async (conv) => {
   console.log(conv.intent.params);
 
+  if (!conv.intent.params?.tokenId?.resolved) {
+    conv.add("Sorry, I didn't quite understand. Please try again.");
+    return;
+  }
+
   const token = await prisma.token.findUnique({
     where: {
       tokenContract_tokenId: {
@@ -60,6 +65,11 @@ app.handle("lore_handler", async (conv) => {
 
 const expressApp = express().use(bodyParser.json());
 expressApp.post("/fulfillment", app);
+expressApp.post("/alexa-fulfillment", (req) => {
+  console.log("Hello Alexa");
+  console.log(JSON.stringify(req.body.request));
+  return "";
+});
 
 expressApp.listen(process.env.PORT || 3000, () =>
   console.log("Server is running...")
