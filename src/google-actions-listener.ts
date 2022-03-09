@@ -18,6 +18,9 @@ app.handle("lore_handler", async (conv) => {
 
   if (!conv.intent.params?.tokenId?.resolved) {
     conv.add("Sorry, I didn't quite understand. Please try again.");
+    conv.add(
+      "Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464"
+    );
     return;
   }
 
@@ -37,6 +40,9 @@ app.handle("lore_handler", async (conv) => {
         conv.intent.params?.tokenId?.resolved ?? "unknown"
       }`
     );
+    conv.add(
+      "Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464"
+    );
     return;
   }
 
@@ -55,12 +61,15 @@ app.handle("lore_handler", async (conv) => {
   });
 
   if (lore.length === 0) {
-    conv.add("Found them, but they got no lore");
-    return;
+    conv.add("Found them, but they got no lore.");
+    conv.add(
+      "Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464"
+    );
   }
 
   conv.add(`Reading lore for ${wizard?.name}`);
   conv.add(`${markdownToTxt(lore[0].markdownText ?? "")}`);
+  conv.scene.next = { name: "actions.scene.END_CONVERSATION" };
 });
 
 const expressApp = express().use(bodyParser.json());
