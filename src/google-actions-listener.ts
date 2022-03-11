@@ -38,10 +38,7 @@ app.handle("lore_handler", async (conv) => {
     conv.add(
       `Whoopsie, nothing for ${
         conv.intent.params?.tokenId?.resolved ?? "unknown"
-      }`
-    );
-    conv.add(
-      "Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464"
+      }. Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464`
     );
     return;
   }
@@ -61,10 +58,10 @@ app.handle("lore_handler", async (conv) => {
   });
 
   if (lore.length === 0) {
-    conv.add("Found them, but they got no lore.");
     conv.add(
-      "Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464"
+      "Found them, but they got no lore. Which wizard would you like to hear lore for? Say something like: read lore for wizard 6464. "
     );
+    return;
   }
 
   conv.add(`Reading lore for ${wizard?.name}`);
