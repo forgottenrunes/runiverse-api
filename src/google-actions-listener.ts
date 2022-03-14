@@ -73,6 +73,11 @@ const expressApp = express().use(bodyParser.json());
 expressApp.post("/fulfillment", app);
 expressApp.post("/alexa-fulfillment", async (req, res) => {
   console.log(req.body);
+  if (!req.body.wizardId || isNaN(parseInt(req.body.wizardId))) {
+    return res.json({
+      lore: "Whoops, couldn't quite understand this wizard id... goodbye",
+    });
+  }
   const token = await prisma.token.findUnique({
     where: {
       tokenContract_tokenId: {
@@ -84,7 +89,9 @@ expressApp.post("/alexa-fulfillment", async (req, res) => {
   });
 
   if (!token) {
-    return res.json({ lore: "Whoops, nothing found for this wizard id..." });
+    return res.json({
+      lore: "Whoops, no lore found for this wizard id... goodbye",
+    });
   }
 
   const wizard = await prisma.wizard.findUnique({
@@ -102,7 +109,9 @@ expressApp.post("/alexa-fulfillment", async (req, res) => {
   });
 
   if (lore.length === 0) {
-    return res.json({ lore: "Found wizard, but they got no lore." });
+    return res.json({
+      lore: "Found wizard, but they have no lore. Goodbye!",
+    });
   }
 
   return res.json({ lore: `${markdownToTxt(lore[0].markdownText ?? "")}` });
