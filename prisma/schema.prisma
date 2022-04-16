@@ -32,6 +32,8 @@ model Token {
   transmutedTo Soul?   @relation("transmutedFromToken")
   currentOwner String? @db.Citext
 
+  Beast      Beast[]
+  BeastSpawn BeastSpawn[]
   @@unique([tokenContract, tokenId])
 }
 
@@ -80,6 +82,8 @@ model Contract {
   order         Int      @unique
 }
 
+// Wizards
+
 model Wizard {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt       DateTime @default(now())
@@ -96,8 +100,17 @@ model Wizard {
   familiar        String?
   rune            String?
   isBurnt         Boolean  @default(false)
-
 }
+
+model WizardOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+// Souls
 
 model Soul {
   id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -128,6 +141,16 @@ model SoulsBlockUpdate {
   timeTaken       Int
 }
 
+model SoulOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+// Ponies
+
 model Pony {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt       DateTime @default(now())
@@ -155,23 +178,71 @@ model PoniesBlockUpdate {
   timeTaken       Int
 }
 
-model WizardOwnershipBlockUpdate {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  upToBlockNumber Int      @unique
-  timeTaken       Int
-}
-
-model SoulOwnershipBlockUpdate {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  upToBlockNumber Int      @unique
-  timeTaken       Int
-}
-
 model PonyOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+// Beasts
+
+model Beast {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  token       Token        @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId     String       @unique @db.Uuid
+  name        String?
+  description String?
+  image       String?
+  background  String?
+  species     String?
+  BeastSpawn  BeastSpawn[]
+}
+
+model BeastsBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model BeastOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+// BeastSpawnSpawn
+
+model BeastSpawn {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  token         Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId       String   @unique @db.Uuid
+  parentBeast   Beast    @relation(fields: [parentBeastId], references: [id], onDelete: Cascade)
+  parentBeastId String   @db.Uuid
+  name          String?
+  image         String?
+  background    String?
+  species       String?
+}
+
+model BeastSpawnBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model BeastSpawnOwnershipBlockUpdate {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

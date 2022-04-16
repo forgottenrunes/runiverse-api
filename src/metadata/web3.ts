@@ -11,6 +11,7 @@ import {
   Provider as MultiCallProvider,
 } from "ethcall";
 import { PONIES_ABI } from "../abis/Ponies";
+import { BEASTS_ABI, BEASTSPAWN_ABI } from "../abis/Beasts";
 
 dotenv.config();
 
@@ -179,6 +180,134 @@ export async function fetchNewPonies(
   }
 
   console.log("Ponies fetched successfully....");
+
+  return entries;
+}
+
+export type BeastEntry = {
+  tokenId: number;
+  metadata?: any;
+};
+
+export async function fetchNewBeasts(
+  sinceBlock: number,
+  upToBlockNumber: number
+): Promise<BeastEntry[]> {
+  const provider = getProvider();
+
+  const contract = new Contract(
+    process.env.BEASTS_CONTRACT as string,
+    BEASTS_ABI,
+    provider
+  );
+
+  console.log(`Previous block number: ${sinceBlock}`);
+  console.log(`Looking up to block number: ${upToBlockNumber}`);
+  console.log(`Fetching new beasts from ze chain....`);
+
+  const events = await contract.queryFilter(
+    contract.filters.Transfer("0x0000000000000000000000000000000000000000"),
+    sinceBlock,
+    upToBlockNumber
+  );
+
+  console.log(`Got ${events.length} new mints`);
+
+  const tokenIds: number[] = events.map((transfer: any) =>
+    transfer.args.tokenId.toNumber()
+  );
+
+  const entries: BeastEntry[] = [];
+
+  for (let i = 0; i < tokenIds.length; i++) {
+    const tokenId = tokenIds[i];
+
+    const metadata = await fetchApiMetadata(
+      tokenId,
+      process.env.BEASTS_BASE_URL as string
+    );
+
+    if (!metadata) continue;
+
+    entries.push({ tokenId, metadata });
+  }
+
+  console.log("Beasts fetched successfully....");
+
+  return entries;
+}
+
+export type BeastSpawnEntry = {
+  tokenId: number;
+  parentBeastTokenId: number;
+  metadata?: any;
+};
+
+export async function fetchNewBeastSpawn(
+  sinceBlock: number,
+  upToBlockNumber: number
+): Promise<BeastSpawnEntry[]> {
+  const provider = getProvider();
+
+  const multiCallProvider = new MultiCallProvider();
+  await multiCallProvider.init(provider);
+
+  const multiCallContract = new MultiCallContract(
+    process.env.BEASTSPAWN_CONTRACT as string,
+    BEASTSPAWN_ABI
+  );
+
+  const contract = new Contract(
+    process.env.BEASTSPAWN_CONTRACT as string,
+    BEASTSPAWN_ABI,
+    provider
+  );
+
+  console.log(`Previous block number: ${sinceBlock}`);
+  console.log(`Looking up to block number: ${upToBlockNumber}`);
+  console.log(`Fetching new beastSpawns from ze chain....`);
+
+  const events = await contract.queryFilter(
+    contract.filters.Transfer("0x0000000000000000000000000000000000000000"),
+    sinceBlock,
+    upToBlockNumber
+  );
+
+  console.log(`Got ${events.length} new mints`);
+
+  const tokenIds: number[] = events.map((transfer: any) =>
+    transfer.args.tokenId.toNumber()
+  );
+
+  const chainData = await multiCallProvider.all(
+    tokenIds.map((tokenId: number) => {
+      return multiCallContract.parent(tokenId);
+    })
+  );
+
+  const entries: BeastSpawnEntry[] = zipWith(
+    tokenIds,
+    chainData,
+    (tokenId, chainData: any) => ({
+      tokenId: tokenId,
+      parentBeastTokenId: chainData.toNumber(),
+    })
+  );
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+
+    const metadata = await fetchApiMetadata(
+      entry.tokenId,
+      process.env.BEASTSPAWN_BASE_URL as string
+    );
+
+    if (!metadata) continue;
+
+    entry.metadata = metadata;
+  }
+
+  console.log("Beast spawn fetched successfully....");
 
   return entries;
 }
