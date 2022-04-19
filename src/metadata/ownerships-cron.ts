@@ -4,6 +4,8 @@ import { WIZARDS_CONTRACT } from "./wizards";
 import { updateNewOwnerships } from "./generic";
 import { PONIES_CONTRACT } from "./ponies";
 import { SOULS_CONTRACT } from "./souls";
+import { BEASTS_ABI } from "../abis/Beasts";
+import { BEASTS_CONTRACT, BEASTSPAWN_CONTRACT } from "./beasts";
 
 async function updateOwnerships() {
   console.log("Wizards....");
@@ -25,6 +27,20 @@ async function updateOwnerships() {
     prisma.ponyOwnershipBlockUpdate,
     parseInt(process.env.PONIES_FIRST_BLOCK as string),
     PONIES_CONTRACT
+  );
+
+  console.log("Beasts....");
+  await updateNewOwnerships(
+    prisma.beastOwnershipBlockUpdate,
+    parseInt(process.env.BEASTS_FIRST_BLOCK as string),
+    BEASTS_CONTRACT
+  );
+
+  console.log("Beast spawn....");
+  await updateNewOwnerships(
+    prisma.beastSpawnOwnershipBlockUpdate,
+    parseInt(process.env.BEASTSPAWN_FIRST_BLOCK as string),
+    BEASTSPAWN_CONTRACT
   );
 }
 

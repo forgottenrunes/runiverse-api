@@ -9,7 +9,9 @@ export async function updateNewOwnerships(
   blockUpdateDbModel:
     | Prisma.WizardOwnershipBlockUpdateDelegate<any>
     | Prisma.SoulOwnershipBlockUpdateDelegate<any>
-    | Prisma.PonyOwnershipBlockUpdateDelegate<any>,
+    | Prisma.PonyOwnershipBlockUpdateDelegate<any>
+    | Prisma.BeastOwnershipBlockUpdateDelegate<any>
+    | Prisma.BeastSpawnOwnershipBlockUpdateDelegate<any>,
   defaultFirstBlockNumber: number,
   contractAddress: string
 ) {
