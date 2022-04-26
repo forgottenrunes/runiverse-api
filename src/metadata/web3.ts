@@ -11,7 +11,7 @@ import {
   Provider as MultiCallProvider,
 } from "ethcall";
 import { PONIES_ABI } from "../abis/Ponies";
-import { BEASTS_ABI, BEASTSPAWN_ABI } from "../abis/Beasts";
+import { BEASTS_ABI, BEASTSPAWN_ABI, WARRIORS_ABI } from "../abis/Beasts";
 
 dotenv.config();
 
@@ -344,4 +344,57 @@ export async function fetchNewOwnerships(
   }
 
   return results;
+}
+
+export type WarriorEntry = {
+  tokenId: number;
+  metadata?: any;
+};
+
+export async function fetchNewWarriors(
+  sinceBlock: number,
+  upToBlockNumber: number
+): Promise<WarriorEntry[]> {
+  const provider = getProvider();
+
+  const contract = new Contract(
+    process.env.WARRIORS_CONTRACT as string,
+    WARRIORS_ABI,
+    provider
+  );
+
+  console.log(`Previous block number: ${sinceBlock}`);
+  console.log(`Looking up to block number: ${upToBlockNumber}`);
+  console.log(`Fetching new warriors from ze chain....`);
+
+  const events = await contract.queryFilter(
+    contract.filters.Transfer("0x0000000000000000000000000000000000000000"),
+    sinceBlock,
+    upToBlockNumber
+  );
+
+  console.log(`Got ${events.length} new mints`);
+
+  const tokenIds: number[] = events.map((transfer: any) =>
+    transfer.args.tokenId.toNumber()
+  );
+
+  const entries: WarriorEntry[] = [];
+
+  for (let i = 0; i < tokenIds.length; i++) {
+    const tokenId = tokenIds[i];
+
+    const metadata = await fetchApiMetadata(
+      tokenId,
+      process.env.WARRIORS_BASE_URL as string
+    );
+
+    if (!metadata) continue;
+
+    entries.push({ tokenId, metadata });
+  }
+
+  console.log("Warriors fetched successfully....");
+
+  return entries;
 }

@@ -34,6 +34,7 @@ model Token {
 
   Beast      Beast[]
   BeastSpawn BeastSpawn[]
+  Warrior    Warrior[]
   @@unique([tokenContract, tokenId])
 }
 
@@ -150,7 +151,6 @@ model SoulOwnershipBlockUpdate {
 }
 
 // Ponies
-
 model Pony {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt       DateTime @default(now())
@@ -187,7 +187,6 @@ model PonyOwnershipBlockUpdate {
 }
 
 // Beasts
-
 model Beast {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt   DateTime     @default(now())
@@ -219,7 +218,6 @@ model BeastOwnershipBlockUpdate {
 }
 
 // BeastSpawnSpawn
-
 model BeastSpawn {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt     DateTime @default(now())
@@ -243,6 +241,41 @@ model BeastSpawnBlockUpdate {
 }
 
 model BeastSpawnOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+// Warriors
+model Warrior {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  token           Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId         String   @unique @db.Uuid
+  name            String?
+  image           String?
+  background      String?
+  backgroundColor String?
+  body            String?
+  head            String?
+  weapon          String?
+  companion       String?
+  rune            String?
+  shield          String?
+}
+
+model WarriorBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model WarriorOwnershipBlockUpdate {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

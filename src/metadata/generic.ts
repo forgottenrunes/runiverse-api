@@ -11,7 +11,8 @@ export async function updateNewOwnerships(
     | Prisma.SoulOwnershipBlockUpdateDelegate<any>
     | Prisma.PonyOwnershipBlockUpdateDelegate<any>
     | Prisma.BeastOwnershipBlockUpdateDelegate<any>
-    | Prisma.BeastSpawnOwnershipBlockUpdateDelegate<any>,
+    | Prisma.BeastSpawnOwnershipBlockUpdateDelegate<any>
+    | Prisma.WarriorOwnershipBlockUpdateDelegate<any>,
   defaultFirstBlockNumber: number,
   contractAddress: string
 ) {

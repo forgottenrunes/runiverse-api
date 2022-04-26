@@ -6,6 +6,7 @@ import { PONIES_CONTRACT } from "./ponies";
 import { SOULS_CONTRACT } from "./souls";
 import { BEASTS_ABI } from "../abis/Beasts";
 import { BEASTS_CONTRACT, BEASTSPAWN_CONTRACT } from "./beasts";
+import { WARRIORS_CONTRACT } from "./warriors";
 
 async function updateOwnerships() {
   console.log("Wizards....");
@@ -42,6 +43,17 @@ async function updateOwnerships() {
     parseInt(process.env.BEASTSPAWN_FIRST_BLOCK as string),
     BEASTSPAWN_CONTRACT
   );
+
+  if (WARRIORS_CONTRACT) {
+    console.log("Warriors....");
+    await updateNewOwnerships(
+      prisma.warriorOwnershipBlockUpdate,
+      parseInt(process.env.WARRIORS_FIRST_BLOCK as string),
+      BEASTSPAWN_CONTRACT
+    );
+  } else {
+    console.log("Not updating warrior ownership as contract not yet set....");
+  }
 }
 
 updateOwnerships();
