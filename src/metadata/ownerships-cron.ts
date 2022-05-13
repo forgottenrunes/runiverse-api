@@ -49,7 +49,7 @@ async function updateOwnerships() {
     await updateNewOwnerships(
       prisma.warriorOwnershipBlockUpdate,
       parseInt(process.env.WARRIORS_FIRST_BLOCK as string),
-      BEASTSPAWN_CONTRACT
+      WARRIORS_CONTRACT
     );
   } else {
     console.log("Not updating warrior ownership as contract not yet set....");
