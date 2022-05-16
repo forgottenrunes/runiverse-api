@@ -25,23 +25,23 @@ const CHARACTER_SETTINGS: {
   },
   souls: {
     singularName: "Soul",
-    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/souls/img`,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/souls/img/`,
   },
   ponies: {
     singularName: "Pony",
-    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/shadowfax/img`,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/shadowfax/img/`,
   },
   beasts: {
     singularName: "Beast",
-    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/beasts/img`,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/beasts/img/`,
   },
   beastspawn: {
     singularName: "Beast Spawn",
-    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/spawn/img`,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/spawn/img/`,
   },
   warriors: {
     singularName: "Warrior",
-    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/warriors/img`,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/warriors/img/`,
   },
 };
 
