@@ -14,6 +14,8 @@ const IPFS_SERVER =
   process.env.IPFS_SERVER ??
   "https://res.cloudinary.com/dopby768d/image/fetch/f_auto/https://nfts.forgottenrunes.com/ipfs";
 
+const QUANTUM_PORTAL_URL = process.env.QUANTUM_PORTAL_URL as string;
+
 const CHARACTER_SETTINGS: {
   [slug: string]: { singularName: string; imageBaseUrl: string };
 } = {
@@ -23,11 +25,23 @@ const CHARACTER_SETTINGS: {
   },
   souls: {
     singularName: "Soul",
-    imageBaseUrl: process.env.SOULS_BASE_IMAGE_URL as string,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/souls/img`,
   },
   ponies: {
     singularName: "Pony",
-    imageBaseUrl: process.env.PONIES_BASE_IMAGE_URL as string,
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/shadowfax/img`,
+  },
+  beasts: {
+    singularName: "Beast",
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/beasts/img`,
+  },
+  beastspawn: {
+    singularName: "Beast Spawn",
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/spawn/img`,
+  },
+  warriors: {
+    singularName: "Warrior",
+    imageBaseUrl: `${QUANTUM_PORTAL_URL}/api/warriors/img`,
   },
 };
 
