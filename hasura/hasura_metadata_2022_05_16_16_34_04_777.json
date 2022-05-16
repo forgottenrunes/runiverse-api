@@ -1,0 +1,689 @@
+{
+  "resource_version": 176,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "runiverse",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "public",
+              "name": "Beast"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "spawn",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "parentBeastId",
+                    "table": {
+                      "schema": "public",
+                      "name": "BeastSpawn"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "tokenId",
+                    "name",
+                    "description",
+                    "image",
+                    "background",
+                    "species"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "BeastSpawn"
+            },
+            "object_relationships": [
+              {
+                "name": "beast",
+                "using": {
+                  "foreign_key_constraint_on": "parentBeastId"
+                }
+              },
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "background",
+                    "image",
+                    "name",
+                    "species",
+                    "createdAt",
+                    "updatedAt",
+                    "id",
+                    "parentBeastId",
+                    "tokenId"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "Lore"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "images",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "loreId",
+                    "table": {
+                      "schema": "public",
+                      "name": "LoreImage"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "backgroundColor",
+                    "createdAt",
+                    "createdAtBlock",
+                    "creator",
+                    "id",
+                    "index",
+                    "loreMetadataURI",
+                    "markdownText",
+                    "nsfw",
+                    "parentLoreIndex",
+                    "previewText",
+                    "rawContent",
+                    "struck",
+                    "tokenId",
+                    "txHash",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 2000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "LoreImage"
+            },
+            "object_relationships": [
+              {
+                "name": "lore",
+                "using": {
+                  "foreign_key_constraint_on": "loreId"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "createdAt",
+                    "href",
+                    "loreId",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 50000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "PaginatedLore"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Token"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "internalTokenId": "id"
+                    }
+                  }
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "images",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "LoreImage"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "loreId"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "backgroundColor",
+                    "createdAt",
+                    "createdAtBlock",
+                    "creator",
+                    "firstImage",
+                    "globalpage",
+                    "id",
+                    "index",
+                    "loreMetadataURI",
+                    "markdownText",
+                    "nsfw",
+                    "page",
+                    "parentLoreIndex",
+                    "previewText",
+                    "rawContent",
+                    "slug",
+                    "struck",
+                    "tokenContract",
+                    "tokenId",
+                    "txHash",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "Pony"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "tokenId",
+                    "name",
+                    "image",
+                    "background",
+                    "backgroundColor",
+                    "clothes",
+                    "head",
+                    "mouth",
+                    "pony",
+                    "rune",
+                    "genes",
+                    "generation"
+                  ],
+                  "filter": {},
+                  "limit": 1000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "Soul"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              },
+              {
+                "name": "transmutedFromToken",
+                "using": {
+                  "foreign_key_constraint_on": "transmutedFromTokenId"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "background",
+                    "backgroundColor",
+                    "body",
+                    "burnIndex",
+                    "createdAt",
+                    "familiar",
+                    "head",
+                    "id",
+                    "image",
+                    "name",
+                    "prop",
+                    "rune",
+                    "tokenId",
+                    "transmutedFromTokenId",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "Token"
+            },
+            "object_relationships": [
+              {
+                "name": "beast",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Beast"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "tokenId"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "beastSpawn",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "BeastSpawn"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "tokenId"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "pony",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Pony"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "tokenId"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "soul",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Soul"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "tokenId"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "transmutedToSoul",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Soul"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "transmutedFromTokenId"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "warrior",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Warrior"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "tokenId"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "wizard",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "Wizard"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "tokenId"
+                    }
+                  }
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "lore",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tokenId",
+                    "table": {
+                      "schema": "public",
+                      "name": "Lore"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "createdAt",
+                    "currentOwner",
+                    "id",
+                    "tokenContract",
+                    "tokenId",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 50000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "Warrior"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "background",
+                    "backgroundColor",
+                    "body",
+                    "companion",
+                    "createdAt",
+                    "head",
+                    "id",
+                    "image",
+                    "name",
+                    "rune",
+                    "shield",
+                    "updatedAt",
+                    "weapon"
+                  ],
+                  "filter": {},
+                  "limit": 20000
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "Wizard"
+            },
+            "object_relationships": [
+              {
+                "name": "token",
+                "using": {
+                  "foreign_key_constraint_on": "tokenId"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "guest",
+                "permission": {
+                  "columns": [
+                    "background",
+                    "backgroundColor",
+                    "body",
+                    "createdAt",
+                    "familiar",
+                    "head",
+                    "id",
+                    "image",
+                    "isBurnt",
+                    "name",
+                    "prop",
+                    "rune",
+                    "tokenId",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": false,
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            },
+            "isolation_level": "read-committed"
+          }
+        }
+      }
+    ],
+    "query_collections": [
+      {
+        "name": "allowed-queries",
+        "definition": {
+          "queries": [
+            {
+              "name": "Wizards",
+              "query": "query MyQuery {\n  Wizard {\n    background\n    body\n    familiar\n    head\n    id\n    image\n    isBurnt\n    name\n    prop\n    rune\n    token {\n      currentOwner\n      tokenId\n      tokenContract\n    }\n  }\n}"
+            },
+            {
+              "name": "Specific Wizard Get",
+              "query": "query Query($id: Int) {\n  Wizard(where: {token: {tokenId: {_eq: $id}}}) {\n    name\n    image\n    token {\n      tokenContract\n      tokenId\n    }\n    prop\n    rune\n    isBurnt\n    head\n    familiar\n    body\n    background\n    backgroundColor\n  }\n}"
+            },
+            {
+              "name": "Warriors Detail Endpoint",
+              "query": "query Query($id: Int) {\n  Warrior(where: {token: {tokenId: {_eq: $id}}}) {\n    background\n    backgroundColor\n    body\n    companion\n    head\n    image\n    name\n    rune\n    shield\n    token {\n      tokenContract\n      tokenId\n    }\n  }\n}"
+            },
+            {
+              "name": "Soul Detail Get",
+              "query": "query Query($id: Int) {\n  Soul(where: {token: {tokenId: {_eq: $id}}}, limit: 1) {\n    name\n    image\n    token {\n      tokenContract\n      tokenId\n    }\n    prop\n    rune\n    transmutedFromToken {\n      tokenContract\n      tokenId\n      wizard {\n        name\n      }\n    }\n    head\n    familiar\n    body\n    background\n    backgroundColor\n  }\n}"
+            }
+          ]
+        }
+      }
+    ],
+    "allowlist": [
+      {
+        "collection": "allowed-queries",
+        "scope": {
+          "global": true
+        }
+      }
+    ],
+    "rest_endpoints": [
+      {
+        "definition": {
+          "query": {
+            "collection_name": "allowed-queries",
+            "query_name": "Soul Detail Get"
+          }
+        },
+        "url": "souls/:id",
+        "methods": [
+          "GET"
+        ],
+        "name": "Soul Detail Get",
+        "comment": null
+      },
+      {
+        "definition": {
+          "query": {
+            "collection_name": "allowed-queries",
+            "query_name": "Warriors Detail Endpoint"
+          }
+        },
+        "url": "warriors/:id",
+        "methods": [
+          "GET"
+        ],
+        "name": "Warriors Detail Endpoint",
+        "comment": null
+      },
+      {
+        "definition": {
+          "query": {
+            "collection_name": "allowed-queries",
+            "query_name": "Wizards"
+          }
+        },
+        "url": "wizards",
+        "methods": [
+          "GET"
+        ],
+        "name": "Wizards",
+        "comment": null
+      },
+      {
+        "definition": {
+          "query": {
+            "collection_name": "allowed-queries",
+            "query_name": "Specific Wizard Get"
+          }
+        },
+        "url": "wizards/:id",
+        "methods": [
+          "GET"
+        ],
+        "name": "Specific Wizard Get",
+        "comment": null
+      }
+    ],
+    "api_limits": {
+      "disabled": false,
+      "rate_limit": {
+        "per_role": {},
+        "global": {
+          "unique_params": null,
+          "max_reqs_per_min": 500
+        }
+      }
+    },
+    "graphql_schema_introspection": {
+      "disabled_for_roles": [
+        "publlic"
+      ]
+    }
+  }
+}
