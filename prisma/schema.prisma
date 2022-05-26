@@ -50,26 +50,27 @@ model LoreImage {
 }
 
 model Lore {
-  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  rawContent      Json?
-  backgroundColor String?
-  markdownText    String?
-  previewText     String?
-  token           Token       @relation(fields: [tokenId], references: [id], onDelete: Cascade)
-  tokenId         String      @db.Uuid
-  index           Int
-  creator         String      @db.Citext
-  parentLoreIndex Int
-  loreMetadataURI String?
-  txHash          String      @unique @db.Citext
-  createdAtBlock  BigInt
-  nsfw            Boolean
-  struck          Boolean
-  discordNotified Boolean     @default(false)
-  twitterNotified Boolean     @default(false)
-  loreImages      LoreImage[]
+  id                 String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  rawContent         Json?
+  backgroundColor    String?
+  markdownText       String?
+  previewText        String?
+  token              Token       @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId            String      @db.Uuid
+  index              Int
+  creator            String      @db.Citext
+  parentLoreIndex    Int
+  loreMetadataURI    String?
+  txHash             String      @unique @db.Citext
+  createdAtBlock     BigInt
+  nsfw               Boolean
+  struck             Boolean
+  discordNotified    Boolean     @default(false)
+  twitterNotified    Boolean     @default(false)
+  loreImages         LoreImage[]
+  isArchivedByHolder Boolean?    @default(false)
 
   @@unique([tokenId, index])
 }
