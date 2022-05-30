@@ -1,5 +1,5 @@
 {
-  "resource_version": 176,
+  "resource_version": 16,
   "metadata": {
     "version": 3,
     "sources": [
@@ -52,6 +52,13 @@
                   "filter": {},
                   "limit": 10000,
                   "allow_aggregations": true
+                }
+              },
+              {
+                "role": "holder",
+                "permission": {
+                  "columns": [],
+                  "filter": {}
                 }
               }
             ]
@@ -135,6 +142,7 @@
                     "creator",
                     "id",
                     "index",
+                    "isArchivedByHolder",
                     "loreMetadataURI",
                     "markdownText",
                     "nsfw",
@@ -149,6 +157,69 @@
                   "filter": {},
                   "limit": 2000,
                   "allow_aggregations": true
+                }
+              },
+              {
+                "role": "holder",
+                "permission": {
+                  "columns": [
+                    "backgroundColor",
+                    "createdAt",
+                    "createdAtBlock",
+                    "creator",
+                    "id",
+                    "index",
+                    "isArchivedByHolder",
+                    "loreMetadataURI",
+                    "markdownText",
+                    "nsfw",
+                    "parentLoreIndex",
+                    "previewText",
+                    "rawContent",
+                    "struck",
+                    "tokenId",
+                    "txHash",
+                    "updatedAt"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "holder",
+                "permission": {
+                  "columns": [
+                    "isArchivedByHolder"
+                  ],
+                  "filter": {
+                    "_and": [
+                      {
+                        "token": {
+                          "currentOwner": {
+                            "_eq": "x-hasura-holder-address"
+                          }
+                        }
+                      },
+                      {
+                        "token": {
+                          "tokenId": {
+                            "_eq": "x-hasura-token-id"
+                          }
+                        }
+                      },
+                      {
+                        "token": {
+                          "tokenContract": {
+                            "_eq": "x-hasura-token-address"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "check": null
                 }
               }
             ]
@@ -235,6 +306,7 @@
                     "globalpage",
                     "id",
                     "index",
+                    "isArchivedByHolder",
                     "loreMetadataURI",
                     "markdownText",
                     "nsfw",
@@ -486,6 +558,19 @@
                   "limit": 50000,
                   "allow_aggregations": true
                 }
+              },
+              {
+                "role": "holder",
+                "permission": {
+                  "columns": [
+                    "currentOwner",
+                    "tokenContract",
+                    "tokenId"
+                  ],
+                  "filter": {},
+                  "limit": 10000,
+                  "allow_aggregations": true
+                }
               }
             ]
           },
@@ -599,6 +684,11 @@
             {
               "name": "Soul Detail Get",
               "query": "query Query($id: Int) {\n  Soul(where: {token: {tokenId: {_eq: $id}}}, limit: 1) {\n    name\n    image\n    token {\n      tokenContract\n      tokenId\n    }\n    prop\n    rune\n    transmutedFromToken {\n      tokenContract\n      tokenId\n      wizard {\n        name\n      }\n    }\n    head\n    familiar\n    body\n    background\n    backgroundColor\n  }\n}"
+            },
+
+            {
+              "name": "Tokens of owner",
+              "query": "query Query($account: citext) {\n    wizards:Wizard(where: { token: { currentOwner: { _eq: $account } } }) {\n      name\n      image\n      token {\n        tokenContract\n        tokenId\n      }\n      isBurnt\n    }\n    souls:Soul(where: { token: { currentOwner: { _eq: $account } } }) {\n      name\n      image\n      token {\n        tokenContract\n        tokenId\n      }\n    }\n    ponies:Pony(where: { token: { currentOwner: { _eq: $account } } }) {\n      name\n      image\n      token {\n        tokenContract\n        tokenId\n      }\n    }\n    beasts:Beast(where: { token: { currentOwner: { _eq: $account } } }) {\n      name\n      image\n      token {\n        tokenContract\n        tokenId\n      }\n    }\n    beastspawn:BeastSpawn(where: { token: { currentOwner: { _eq: $account } } }) {\n      name\n      image\n      token {\n        tokenContract\n        tokenId\n      }\n    }\n    warriors:Warrior(where: { token: { currentOwner: { _eq: $account } } }) {\n      name\n      image\n      token {\n        tokenContract\n        tokenId\n      }\n    }\n  }"
             }
           ]
         }
@@ -625,6 +715,20 @@
           "GET"
         ],
         "name": "Soul Detail Get",
+        "comment": null
+      },
+      {
+        "definition": {
+          "query": {
+            "collection_name": "allowed-queries",
+            "query_name": "Tokens of owner"
+          }
+        },
+        "url": "tokens-of",
+        "methods": [
+          "POST"
+        ],
+        "name": "Tokens of owner",
         "comment": null
       },
       {
@@ -682,7 +786,6 @@
     },
     "graphql_schema_introspection": {
       "disabled_for_roles": [
-        "publlic"
       ]
     }
   }

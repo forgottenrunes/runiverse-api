@@ -398,3 +398,76 @@ export async function fetchNewWarriors(
 
   return entries;
 }
+
+export type BabyWizardEntry = {
+  tokenId: number;
+  metadata?: any;
+};
+
+export async function fetchNewBabyWizards(
+  sinceBlock: number,
+  upToBlockNumber: number
+): Promise<BabyWizardEntry[]> {
+  const provider = getProvider();
+
+  const contract = new Contract(
+    process.env.BABY_WIZARDS_CONTRACT as string,
+    ERC721_LITE_ABI,
+    provider
+  );
+
+  console.log(`Previous block number: ${sinceBlock}`);
+  console.log(`Looking up to block number: ${upToBlockNumber}`);
+  console.log(`Fetching new baby wizards from ze chain....`);
+
+  const events = await contract.queryFilter(
+    contract.filters.Transfer("0x0000000000000000000000000000000000000000"),
+    sinceBlock,
+    upToBlockNumber
+  );
+
+  console.log(`Got ${events.length} new mints`);
+
+  const tokenIds: number[] = events.map((transfer: any) =>
+    transfer.args.tokenId.toNumber()
+  );
+
+  const entries: BabyWizardEntry[] = [];
+
+  for (let i = 0; i < tokenIds.length; i++) {
+    const tokenId = tokenIds[i];
+
+    let metadata;
+    const url = `http://forgottenbabies.com/uri/json/${tokenId}.json`;
+
+    console.log(`Fetching metadata for ${tokenId} via ${url}`);
+    let res;
+    try {
+      res = await axios.get(url);
+    } catch (e: any) {
+      console.error("Fetch from network error (after retries)...");
+      console.error("Bad IPFS request: " + e?.message);
+
+      if (e.response.status === 400) {
+        // This could happen if say we did have a SoulBurned event but then the owner properly burnt their Soul nft (so no owner)
+        console.warn(`Couldn't get metadata for ${tokenId}`);
+      }
+      throw Error("API fetch issue");
+    }
+
+    if (res.status >= 200 && res.status < 300) {
+      metadata = res.data;
+    } else {
+      console.error("Bad API request: " + res.statusText);
+      throw Error("API issue");
+    }
+
+    if (!metadata) continue;
+
+    entries.push({ tokenId, metadata });
+  }
+
+  console.log("Baby wizards fetched successfully....");
+
+  return entries;
+}

@@ -25,16 +25,18 @@ model Token {
   tokenContract String   @db.Citext
   tokenId       Int
   lore          Lore[]
-  wizard        Wizard?
-  soul          Soul?    @relation("token")
-  pony          Pony?
 
   transmutedTo Soul?   @relation("transmutedFromToken")
   currentOwner String? @db.Citext
 
-  Beast      Beast[]
-  BeastSpawn BeastSpawn[]
-  Warrior    Warrior[]
+  wizard     Wizard?
+  soul       Soul?       @relation("token")
+  pony       Pony?
+  beast      Beast?
+  beastSpawn BeastSpawn?
+  warrior    Warrior?
+  babyWizard BabyWizard?
+
   @@unique([tokenContract, tokenId])
 }
 
@@ -277,6 +279,41 @@ model WarriorBlockUpdate {
 }
 
 model WarriorOwnershipBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+// Babies
+
+model BabyWizard {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  token           Token    @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId         String   @unique @db.Uuid
+  name            String?
+  image           String?
+  background      String?
+  backgroundColor String?
+  body            String?
+  head            String?
+  prop            String?
+  familiar        String?
+  rune            String?
+}
+
+model BabyWizardBlockUpdate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  upToBlockNumber Int      @unique
+  timeTaken       Int
+}
+
+model BabyWizardOwnershipBlockUpdate {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
