@@ -1,10 +1,10 @@
 {
   "name": "frwc-data",
   "version": "0.0.1",
-  "node": "16.10.0",
+  "node": "16.15.1",
   "engines": {
     "node": "16",
-    "npm": "7"
+    "npm": "8"
   },
   "scripts": {
     "build": "tsc",
@@ -13,11 +13,14 @@
     "update-ongoing-mints-metadata": "node --enable-source-maps dist/metadata/ongoing-mints-cron.js",
     "update-ownerships": "node --enable-source-maps dist/metadata/ownerships-cron.js",
     "update-discord": "node --enable-source-maps dist/notifications/discord.js",
+    "update-indexes": "node --enable-source-maps dist/elasticsearch/update-indexes.js",
+    "update-mappings": "node --enable-source-maps dist/elasticsearch/update-mappings.js",
     "listener": "node --enable-source-maps dist/listener.js",
     "google-actions-listener": "node --enable-source-maps dist/google-actions-listener.js"
   },
   "dependencies": {
     "@assistant/conversation": "^3.8.1",
+    "@elastic/elasticsearch": "8.2.1",
     "@prisma/client": "3.14.0",
     "axios": "0.27.2",
     "axios-retry": "3.2.5",
@@ -41,12 +44,12 @@
   "devDependencies": {
     "@types/lodash": "4.14.182",
     "@types/marked": "4.0.3",
-    "@types/node": "16.11.7",
+    "@types/node": "16.11.42",
     "@types/twit": "2.2.30",
     "prettier": "2.6.2",
     "prettier-plugin-prisma": "3.14.0",
     "prisma": "3.14.0",
-    "ts-node": "10.8.0",
-    "typescript": "4.7.2"
+    "ts-node": "10.8.1",
+    "typescript": "4.7.4"
   }
 }
