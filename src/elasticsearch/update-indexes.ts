@@ -13,7 +13,7 @@ export async function updateLoreIndex() {
        BS.name as "spawn.name", BS.image as "spawn.image",
        P.name as "pony.name", P.image as "pony.image",
        WAR.name as "warrior.name", WAR.image as "warrior.image",
-       T.id as "tokenId",
+       l."tokenId" as "tokenId",
        l.id, slug, page, "markdownText", "firstImage"
         from "PaginatedLore" as l join "Token" T on l."internalTokenId" = T."id"
            left join "Soul" S on T.id = S."tokenId"
