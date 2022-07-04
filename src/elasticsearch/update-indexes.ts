@@ -32,6 +32,7 @@ export async function updateLoreIndex() {
       page: entry.page - 1,
       markdown: entry.markdownText,
       firstImage: entry.firstImage,
+      tokenId: entry.tokenId,
       tokenName:
         entry["wizard.name"] ??
         entry["beast.name"] ??
@@ -57,11 +58,11 @@ export async function updateLoreIndex() {
 
   console.log(`Added ${count.count - prevCount.count} new lores\nDone!\n`);
 
-  (
-    await es.search({
-      query: { simple_query_string: { query: "pony" } },
-    })
-  ).hits.hits.map((result) => console.log(result));
+  // (
+  //   await es.search({
+  //     query: { simple_query_string: { query: "pony" } },
+  //   })
+  // ).hits.hits.map((result) => console.log(result));
 }
 
 updateLoreIndex();

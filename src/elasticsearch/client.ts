@@ -33,6 +33,7 @@ export const LORE_INDEX: IndicesCreateRequest = {
       firstImage: { type: "text" },
       tokenName: { type: "text" },
       tokenImage: { type: "text" },
+      tokenId: { type: "integer" },
     },
   },
 };
