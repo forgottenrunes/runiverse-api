@@ -29,7 +29,7 @@ export async function updateLoreIndex() {
     { index: { _index: "lore", _id: entry.id } },
     {
       slug: entry.slug,
-      page: entry.page - 1,
+      page: entry.page,
       markdown: entry.markdownText,
       firstImage: entry.firstImage,
       tokenId: entry.tokenId,
