@@ -33,6 +33,7 @@
     "express": "4.18.1",
     "fastq": "1.13.0",
     "lodash": "4.17.21",
+    "markdown-to-txt": "^2.0.1",
     "marked": "4.0.12",
     "remark-parse": "10.0.1",
     "remark-squeeze-paragraphs": "5.0.1",

@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { getClient } from "./client";
+import markdownToTxt from "markdown-to-txt";
 
 const prisma = new PrismaClient();
 
@@ -31,6 +32,7 @@ export async function updateLoreIndex() {
       slug: entry.slug,
       page: entry.page,
       markdown: entry.markdownText,
+      previewText: markdownToTxt(entry.markdownText ?? ""),
       firstImage: entry.firstImage,
       tokenId: entry.tokenId,
       tokenName:

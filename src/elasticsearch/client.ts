@@ -29,6 +29,7 @@ export const LORE_INDEX: IndicesCreateRequest = {
       id: { type: "text" },
       page: { type: "integer" },
       markdown: { type: "text" },
+      previewText: { type: "text" },
       slug: { type: "text" },
       firstImage: { type: "text" },
       tokenName: { type: "text" },
