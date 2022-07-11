@@ -65,7 +65,7 @@ model Lore {
   creator            String      @db.Citext
   parentLoreIndex    Int
   loreMetadataURI    String?
-  txHash             String      @unique @db.Citext
+  txHash             String      @db.Citext
   createdAtBlock     BigInt
   nsfw               Boolean
   struck             Boolean
