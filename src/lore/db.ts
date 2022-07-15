@@ -73,6 +73,8 @@ export async function updateDbWithLoreEntries(
         data: updateData,
         select: { id: true },
       });
+      console.log("Deleting previous images to avoid double adding...");
+      await prisma.loreImage.deleteMany({ where: { loreId: existingLore.id } });
     } else {
       updatedLore = await prisma.lore.create({
         data: updateData,
