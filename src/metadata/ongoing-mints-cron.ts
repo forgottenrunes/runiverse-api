@@ -1,11 +1,19 @@
-import { updateMissingPonies } from "./ponies";
-import { updateMissingSouls } from "./souls";
-import { updateMissingBeasts, updateMissingBeastSpawn } from "./beasts";
-import { updateMissingWarriors } from "./warriors";
-import { updateMissingBabyWizards } from "./baby-wizards";
+import { PONIES_CONTRACT, updateMissingPonies } from "./ponies";
+import { SOULS_CONTRACT, updateMissingSouls } from "./souls";
+import {
+  BEASTS_CONTRACT,
+  BEASTSPAWN_CONTRACT,
+  updateMissingBeasts,
+  updateMissingBeastSpawn,
+} from "./beasts";
+import { updateMissingWarriors, WARRIORS_CONTRACT } from "./warriors";
+import {
+  BABY_WIZARDS_CONTRACT,
+  updateMissingBabyWizards,
+} from "./baby-wizards";
 
 async function updateMissingTokens() {
-  if (process.env.SOULS_CONTRACT) {
+  if (SOULS_CONTRACT) {
     console.log("Indexing missing Souls....");
     await updateMissingSouls();
   } else {
@@ -14,7 +22,7 @@ async function updateMissingTokens() {
     );
   }
 
-  if (process.env.PONIES_CONTRACT) {
+  if (PONIES_CONTRACT) {
     console.log("Indexing missing Ponies...");
     await updateMissingPonies();
   } else {
@@ -22,7 +30,7 @@ async function updateMissingTokens() {
       "Not indexing missing Ponies as contract not set in env vars yet"
     );
   }
-  if (process.env.BEASTS_CONTRACT) {
+  if (BEASTS_CONTRACT) {
     console.log("Indexing missing Beasts...");
     await updateMissingBeasts();
   } else {
@@ -30,7 +38,7 @@ async function updateMissingTokens() {
       "Not indexing missing Beasts as contract not set in env vars yet"
     );
   }
-  if (process.env.BEASTSPAWN_CONTRACT) {
+  if (BEASTSPAWN_CONTRACT) {
     console.log("Indexing missing Beast Spawn...");
     await updateMissingBeastSpawn();
   } else {
@@ -39,7 +47,7 @@ async function updateMissingTokens() {
     );
   }
 
-  if (process.env.WARRIORS_CONTRACT) {
+  if (WARRIORS_CONTRACT) {
     console.log("Indexing missing Warriors...");
     await updateMissingWarriors();
   } else {
@@ -48,7 +56,7 @@ async function updateMissingTokens() {
     );
   }
 
-  if (process.env.BABY_WIZARDS_CONTRACT) {
+  if (BABY_WIZARDS_CONTRACT) {
     console.log("Indexing missing Baby wizards...");
     await updateMissingBabyWizards();
   } else {
