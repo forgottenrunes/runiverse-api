@@ -171,16 +171,16 @@ export async function updateMissingLore() {
 
     const countUpdated = await updateDbWithLoreEntries(entries);
 
-    if (countUpdated > 0) {
-      if (countUpdated <= 10) {
-        console.log("Forcing NextJS rebuild of updated lore pages...");
-        await rebuildLoreWebPages(previousBlockNumber, blockNumber);
-      } else {
-        console.log(
-          "We updated more than 10 lores in one go so not rebuilding NextJS pages. Consider kicking off a build once all caught up."
-        );
-      }
-    }
+    // if (countUpdated > 0) {
+    //   if (countUpdated <= 10) {
+    //     console.log("Forcing NextJS rebuild of updated lore pages...");
+    //     await rebuildLoreWebPages(previousBlockNumber, blockNumber);
+    //   } else {
+    //     console.log(
+    //       "We updated more than 10 lores in one go so not rebuilding NextJS pages. Consider kicking off a build once all caught up."
+    //     );
+    //   }
+    // }
 
     const timeTaken = Math.round(performance.now() - t0);
 
